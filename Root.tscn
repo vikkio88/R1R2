@@ -1,0 +1,165 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Root.gd" type="Script" id=1]
+[ext_resource path="res://assets/A.png" type="Texture" id=2]
+[ext_resource path="res://assets/RB.png" type="Texture" id=3]
+[ext_resource path="res://assets/LB.png" type="Texture" id=4]
+[ext_resource path="res://assets/X.png" type="Texture" id=5]
+[ext_resource path="res://assets/B.png" type="Texture" id=6]
+[ext_resource path="res://assets/RT.png" type="Texture" id=7]
+[ext_resource path="res://assets/Y.png" type="Texture" id=8]
+[ext_resource path="res://assets/LT.png" type="Texture" id=9]
+
+[node name="Root" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="InputView" type="Node2D" parent="."]
+
+[node name="Active" type="Node2D" parent="InputView"]
+z_index = 1
+
+[node name="Y" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 658, 261 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 8 )
+
+[node name="B" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 720, 326 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 6 )
+offset = Vector2( 0, -1.52588e-05 )
+
+[node name="A" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 657, 392 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 2 )
+offset = Vector2( 0, -1.52588e-05 )
+
+[node name="X" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 590, 328 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 5 )
+offset = Vector2( 0, -1.52588e-05 )
+
+[node name="RB" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 658, 184 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 3 )
+
+[node name="RT" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 660, 106 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 7 )
+
+[node name="LB" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 272, 185.429 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
+
+[node name="LT" type="Sprite" parent="InputView/Active"]
+visible = false
+position = Vector2( 274, 107.429 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 9 )
+
+[node name="Shadow" type="Node2D" parent="InputView"]
+
+[node name="Y" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 658, 261 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 8 )
+
+[node name="B" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 720, 326 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 6 )
+offset = Vector2( 0, -1.52588e-05 )
+
+[node name="A" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 657, 392 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 2 )
+offset = Vector2( 0, -1.52588e-05 )
+
+[node name="X" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 590, 328 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 5 )
+offset = Vector2( 0, -1.52588e-05 )
+
+[node name="RB" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 658, 184 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 3 )
+
+[node name="RT" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 660, 106 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 7 )
+
+[node name="LB" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 272, 185.429 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
+
+[node name="LT" type="Sprite" parent="InputView/Shadow"]
+self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
+position = Vector2( 274, 107.429 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 9 )
+
+[node name="GameView" type="Node2D" parent="."]
+
+[node name="A" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 474, 269 )
+texture = ExtResource( 2 )
+
+[node name="B" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 494, 273 )
+texture = ExtResource( 6 )
+
+[node name="Lb" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 501, 280 )
+texture = ExtResource( 4 )
+
+[node name="Lt" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 501, 300 )
+texture = ExtResource( 9 )
+
+[node name="Rb" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 504, 276 )
+texture = ExtResource( 3 )
+
+[node name="Rt" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 508, 313 )
+texture = ExtResource( 7 )
+
+[node name="X" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 504, 276 )
+texture = ExtResource( 5 )
+
+[node name="Y" type="Sprite" parent="GameView"]
+visible = false
+position = Vector2( 504, 276 )
+texture = ExtResource( 8 )
