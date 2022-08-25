@@ -40,7 +40,7 @@ offset = Vector2( 0, -1.52588e-05 )
 
 [node name="X" type="Sprite" parent="InputView/Active"]
 visible = false
-position = Vector2( 590, 328 )
+position = Vector2( 594, 328 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 5 )
 offset = Vector2( 0, -1.52588e-05 )
@@ -93,7 +93,7 @@ offset = Vector2( 0, -1.52588e-05 )
 
 [node name="X" type="Sprite" parent="InputView/Shadow"]
 self_modulate = Color( 0.988235, 0.972549, 0.972549, 0.192157 )
-position = Vector2( 590, 328 )
+position = Vector2( 594, 328 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 5 )
 offset = Vector2( 0, -1.52588e-05 )
@@ -163,3 +163,7 @@ texture = ExtResource( 5 )
 visible = false
 position = Vector2( 504, 276 )
 texture = ExtResource( 8 )
+
+[node name="Cam" type="Camera2D" parent="."]
+position = Vector2( 513, 303 )
+current = true
