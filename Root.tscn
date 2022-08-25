@@ -134,22 +134,22 @@ visible = false
 position = Vector2( 494, 273 )
 texture = ExtResource( 6 )
 
-[node name="Lb" type="Sprite" parent="GameView"]
+[node name="LB" type="Sprite" parent="GameView"]
 visible = false
 position = Vector2( 501, 280 )
 texture = ExtResource( 4 )
 
-[node name="Lt" type="Sprite" parent="GameView"]
+[node name="LT" type="Sprite" parent="GameView"]
 visible = false
 position = Vector2( 501, 300 )
 texture = ExtResource( 9 )
 
-[node name="Rb" type="Sprite" parent="GameView"]
+[node name="RB" type="Sprite" parent="GameView"]
 visible = false
 position = Vector2( 504, 276 )
 texture = ExtResource( 3 )
 
-[node name="Rt" type="Sprite" parent="GameView"]
+[node name="RT" type="Sprite" parent="GameView"]
 visible = false
 position = Vector2( 508, 313 )
 texture = ExtResource( 7 )

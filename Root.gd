@@ -1,4 +1,7 @@
 extends Node2D
+var is_linux = false
+var is_game_started = false
+
 const buttonsClickedDefault = {
 	Y = false,
 	X = false,
@@ -20,6 +23,20 @@ onready var SpriteNodes = {
 	LB = $InputView/Active/LB,
 	LT = $InputView/Active/LT
 }
+
+onready var GameSpriteNodes = {
+	Y = $GameView/Y,
+	X = $GameView/X,
+	A = $GameView/A,
+	B = $GameView/B,
+	RB = $GameView/RB,
+	RT = $GameView/RT,
+	LB = $GameView/LB,
+	LT = $GameView/LT
+}
+
+func _init():
+	is_linux = not ("Window" in OS.get_name())
 
 #func _input(event):
 #	if event is InputEventJoypadMotion:
@@ -47,11 +64,11 @@ func _process(delta):
 	if Input.is_action_just_released("LB") or Input.is_action_pressed("LB"):
 		buttonClicked.LB = true;
 		print_debug("lb")
-	if  Input.is_action_pressed("RT"):
+	if  Input.is_action_pressed("RTlinux" if is_linux else "RT"):
 		buttonClicked.RT = true
 		print_debug("rt")
 			
-	if Input.is_action_pressed("LT"):
+	if Input.is_action_pressed("LTlinux" if is_linux else "LT"):
 		buttonClicked.LT = true
 		print_debug("lt")
 	
