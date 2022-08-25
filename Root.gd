@@ -21,6 +21,10 @@ onready var SpriteNodes = {
 	LT = $InputView/Active/LT
 }
 
+#func _input(event):
+#	if event is InputEventJoypadMotion:
+#		print_debug(event.as_text())
+
 
 var buttonClicked = buttonsClickedDefault
 
