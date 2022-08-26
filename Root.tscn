@@ -167,3 +167,8 @@ texture = ExtResource( 8 )
 [node name="Cam" type="Camera2D" parent="."]
 position = Vector2( 513, 303 )
 current = true
+
+[node name="GameTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="timeout" from="GameTimer" to="." method="_on_GameTimer_timeout"]

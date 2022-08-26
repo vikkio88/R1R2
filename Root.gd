@@ -1,6 +1,7 @@
 extends Node2D
 var is_linux = false
 var is_game_started = false
+var currently_shown = null
 
 const buttonsClickedDefault = {
 	Y = false,
@@ -50,15 +51,21 @@ var buttonClicked = buttonsClickedDefault
 func _init():
 	is_linux = not ("Window" in OS.get_name())
 
+func get_random_game_sprite_node_key():
+   var keys = GameSpriteNodes.keys()
+   return keys[randi() % keys.size()]
+
 func _ready():
 	randomize()
 	noise.seed = randi()
 	noise.period = 4
 	noise.octaves = 2
 
-#func _input(event):
+func _input(event):
 #	if event is InputEventJoypadMotion:
 #		print_debug(event.as_text())
+	if event is InputEventJoypadButton:
+		print_debug((event.as_text()))
 
 func shake():
 	var amount = pow(trauma, trauma_power)
@@ -94,10 +101,19 @@ func _process(delta):
 		buttonClicked.LT = true
 		print_debug("lt")
 	
-	for key in buttonClicked:
-		if key in SpriteNodes:
-			SpriteNodes[key].visible = buttonClicked[key]
-			
+	
+	if Input.is_action_just_released("start") and not is_game_started:
+		print_debug("start")
+		is_game_started = true
+		$GameTimer.start()
+	
+	var clicked = check_button_click()
+	var was_a_button_clicked = clicked.size() > 0
+	if was_a_button_clicked:
+		trauma = .15
+	
+	check_clicked_correctness(clicked)
+
 	if Input.is_action_just_released("ui_accept"):
 		trauma = .5
 	
@@ -108,8 +124,34 @@ func _process(delta):
 	buttonClicked = buttonsClickedDefault.duplicate()
 	
 	
-func is_default(buttonClicked:Dictionary) -> bool:
+func check_button_click():
+	var clicked = []
 	for key in buttonClicked:
-		if buttonClicked[key]: 
-			return false
-	return true
+		if key in SpriteNodes:
+			if buttonClicked[key]:
+				clicked.push_back(key)
+			SpriteNodes[key].visible = buttonClicked[key]
+	return clicked
+
+func check_clicked_correctness(clicked):
+	if clicked.size() < 1:
+		return
+	
+	if currently_shown in clicked:
+		print_debug("you clicked the currently shown")
+		if clicked.size() > 1:
+			print_debug("but you clicked also others", currently_shown, clicked)
+	else:
+		print_debug("you clicked the wrong button", currently_shown, clicked)
+
+
+func _on_GameTimer_timeout():
+	print_debug("tick")
+	if is_game_started:
+		for key in GameSpriteNodes:
+			GameSpriteNodes[key].visible = false
+		var key = get_random_game_sprite_node_key()
+		var node_to_show = GameSpriteNodes[key]
+		node_to_show.visible = true
+		currently_shown = key
+		
