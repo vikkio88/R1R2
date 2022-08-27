@@ -61,11 +61,11 @@ func _ready():
 	noise.period = 4
 	noise.octaves = 2
 
-func _input(event):
+#func _input(event):
 #	if event is InputEventJoypadMotion:
 #		print_debug(event.as_text())
-	if event is InputEventJoypadButton:
-		print_debug((event.as_text()))
+#	if event is InputEventJoypadButton:
+#		print_debug((event.as_text()))
 
 func shake():
 	var amount = pow(trauma, trauma_power)
@@ -102,7 +102,7 @@ func _process(delta):
 		print_debug("lt")
 	
 	
-	if Input.is_action_just_released("start") and not is_game_started:
+	if Input.is_action_just_released("startlinux" if is_linux else "start") and not is_game_started:
 		print_debug("start")
 		is_game_started = true
 		$GameTimer.start()
