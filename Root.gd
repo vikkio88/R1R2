@@ -14,6 +14,8 @@ const buttonsClickedDefault = {
 	LT = false
 }
 
+var score:int = 0;
+
 
 onready var Cam = $Cam;
 onready var noise = OpenSimplexNoise.new()
@@ -61,11 +63,11 @@ func _ready():
 	noise.period = 4
 	noise.octaves = 2
 
-#func _input(event):
+func _input(event):
 #	if event is InputEventJoypadMotion:
 #		print_debug(event.as_text())
-#	if event is InputEventJoypadButton:
-#		print_debug((event.as_text()))
+	if event is InputEventJoypadButton:
+		print_debug((event.as_text()))
 
 func shake():
 	var amount = pow(trauma, trauma_power)
@@ -126,6 +128,9 @@ func _process(delta):
 	
 func check_button_click():
 	var clicked = []
+	if not is_game_started:
+		return clicked
+	
 	for key in buttonClicked:
 		if key in SpriteNodes:
 			if buttonClicked[key]:
@@ -134,20 +139,28 @@ func check_button_click():
 	return clicked
 
 func check_clicked_correctness(clicked):
-	if clicked.size() < 1:
+	if clicked.size() < 1 or not is_game_started:
 		return
 	
 	if currently_shown in clicked:
 		print_debug("you clicked the currently shown")
+		score += 1
 		if clicked.size() > 1:
+			score -=1
 			print_debug("but you clicked also others", currently_shown, clicked)
 	else:
+		score -= 1
+		trauma = .5
 		print_debug("you clicked the wrong button", currently_shown, clicked)
+	
+	score = 0 if score < 0 else score
+	$ScoreLabel.text = "SCORE: %d" % score
 
 
 func _on_GameTimer_timeout():
 	print_debug("tick")
 	if is_game_started:
+	# here we need to check if when the time expires whether the button was clicked
 		for key in GameSpriteNodes:
 			GameSpriteNodes[key].visible = false
 		var key = get_random_game_sprite_node_key()

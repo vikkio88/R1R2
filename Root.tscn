@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Root.gd" type="Script" id=1]
 [ext_resource path="res://assets/A.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/RT.png" type="Texture" id=7]
 [ext_resource path="res://assets/Y.png" type="Texture" id=8]
 [ext_resource path="res://assets/LT.png" type="Texture" id=9]
+[ext_resource path="res://theme.tres" type="Theme" id=10]
 
 [node name="Root" type="Node2D"]
 script = ExtResource( 1 )
@@ -170,5 +171,15 @@ current = true
 
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 3.0
+
+[node name="ScoreLabel" type="Label" parent="."]
+margin_left = 30.0
+margin_top = 26.0
+margin_right = 70.0
+margin_bottom = 40.0
+theme = ExtResource( 10 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "SCORE:"
+uppercase = true
 
 [connection signal="timeout" from="GameTimer" to="." method="_on_GameTimer_timeout"]
