@@ -14,7 +14,8 @@ const buttonsClickedDefault = {
 	LT = false
 }
 
-var score:int = 0;
+var score:int = 0
+var score_checked = false
 
 
 onready var Cam = $Cam;
@@ -128,7 +129,7 @@ func _process(delta):
 	
 func check_button_click():
 	var clicked = []
-	if not is_game_started:
+	if not is_game_started or score_checked:
 		return clicked
 	
 	for key in buttonClicked:
@@ -153,6 +154,7 @@ func check_clicked_correctness(clicked):
 		trauma = .5
 		print_debug("you clicked the wrong button", currently_shown, clicked)
 	
+	score_checked = true
 	score = 0 if score < 0 else score
 	$ScoreLabel.text = "SCORE: %d" % score
 
@@ -161,6 +163,7 @@ func _on_GameTimer_timeout():
 	print_debug("tick")
 	if is_game_started:
 	# here we need to check if when the time expires whether the button was clicked
+		score_checked = false
 		for key in GameSpriteNodes:
 			GameSpriteNodes[key].visible = false
 		var key = get_random_game_sprite_node_key()
