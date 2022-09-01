@@ -24,6 +24,7 @@ export var max_offset = Vector2(100, 75)  # Maximum hor/ver shake in pixels.
 export var max_roll = 0.1  # Maximum rotation in radians (use sparingly)
 
 onready var Audios = {Start = $SFX/Start, OK = $SFX/Ok, WRONG = $SFX/Wrong}
+onready var Timers = {Game = $GameTimer, Reset = $ResetTimer}
 
 onready var SpriteNodes = {
 	Y = $InputView/Active/Y,
@@ -121,7 +122,7 @@ func _process(delta):
 	):
 		Audios.Start.play()
 		is_game_started = true
-		$GameTimer.start()
+		Timers.Game.start()
 
 	var clicked = check_button_click()
 	var was_a_button_clicked = clicked.size() > 0
@@ -159,7 +160,7 @@ func check_clicked_correctness(clicked, missed = false):
 		Input.start_joy_vibration(0, .1, .2, .2)
 		LabelCorrect.visible = true
 		Audios.OK.play()
-		Elapsed.text = "%.2f sec" % ($GameTimer.wait_time - $GameTimer.time_left)
+		Elapsed.text = "%.2f sec" % (Timers.Game.wait_time - Timers.Game.time_left)
 
 		# if you score more than 10 will hide the shadows
 		if score > 10 and $InputView/Shadow.visible:
@@ -177,8 +178,8 @@ func check_clicked_correctness(clicked, missed = false):
 
 	score_checked = true
 
-	$GameTimer.stop()
-	$ResetTimer.start()
+	Timers.Game.stop()
+	Timers.Reset.start()
 	for key in GameSpriteNodes:
 		GameSpriteNodes[key].visible = false
 
@@ -213,5 +214,5 @@ func _on_ResetTimer_timeout():
 	Elapsed.text = ""
 	# if score > 20 will speed up at every right answer
 	if score > 20:
-		$GameTimer.wait_time = 0.7
-	$GameTimer.start()
+		Timers.Game.wait_time = 0.7
+	Timers.Game.start()
