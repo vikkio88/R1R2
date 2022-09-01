@@ -1,6 +1,7 @@
 extends Node2D
 var is_linux = false
 var is_game_started = false
+var game_over = false
 var currently_shown = null
 
 var PRINT_INPUT_DEBUG = false
@@ -10,6 +11,7 @@ const buttonsClickedDefault = {
 }
 
 var score: int = 0
+var lives: int = 5
 var score_checked = false
 
 onready var Cam = $Cam
@@ -20,6 +22,8 @@ var trauma_power = 2  # Trauma exponent. Use [2, 3].
 export var decay = 0.8  # How quickly the shaking stops [0, 1].
 export var max_offset = Vector2(100, 75)  # Maximum hor/ver shake in pixels.
 export var max_roll = 0.1  # Maximum rotation in radians (use sparingly)
+
+onready var Audios = {Start = $SFX/Start, OK = $SFX/Ok, WRONG = $SFX/Wrong}
 
 onready var SpriteNodes = {
 	Y = $InputView/Active/Y,
@@ -42,9 +46,11 @@ onready var GameSpriteNodes = {
 	LB = $GameView/LB,
 	LT = $GameView/LT
 }
-onready var LabelWrong = $Wrong;
-onready var LabelCorrect = $Correct;
-onready var LabelMissed = $Missed;
+
+onready var Elapsed = $Elapsed
+onready var LabelWrong = $Wrong
+onready var LabelCorrect = $Correct
+onready var LabelMissed = $Missed
 
 var buttonClicked = buttonsClickedDefault
 
@@ -109,13 +115,11 @@ func _process(delta):
 				print_debug("clicked: ", buttonClicked[key])
 
 	if (
-		(
-			Input.is_action_just_released("startlinux" if is_linux else "start")
-#			or Input.is_action_just_released("ui_accept")
-		)
+		(Input.is_action_just_released("startlinux" if is_linux else "start"))
+		#			or Input.is_action_just_released("ui_accept")
 		and not is_game_started
 	):
-		print_debug("start")
+		Audios.Start.play()
 		is_game_started = true
 		$GameTimer.start()
 
@@ -154,31 +158,43 @@ func check_clicked_correctness(clicked, missed = false):
 		score += 1
 		Input.start_joy_vibration(0, .1, .2, .2)
 		LabelCorrect.visible = true
+		Audios.OK.play()
+		Elapsed.text = "%.2f sec" % ($GameTimer.wait_time - $GameTimer.time_left)
+
+		# if you score more than 10 will hide the shadows
+		if score > 10 and $InputView/Shadow.visible:
+			$InputView/Shadow.visible = false
 	else:
 		score -= 1
 		trauma = .5
 		Input.start_joy_vibration(0, .2, .4, .4)
+		Audios.WRONG.play()
+		lives -= 1
 		if not missed:
 			LabelWrong.visible = true
 		else:
 			LabelMissed.visible = true
 
 	score_checked = true
+
 	$GameTimer.stop()
 	$ResetTimer.start()
 	for key in GameSpriteNodes:
-			GameSpriteNodes[key].visible = false
-	
+		GameSpriteNodes[key].visible = false
+
 	score = 0 if score < 0 else score
 	$ScoreLabel.text = "SCORE: %d" % score
+	if lives <= 0:
+		lives = 0
+		game_over = true
+		is_game_started = false
 
 
 func _on_GameTimer_timeout():
 	if is_game_started and not score_checked and currently_shown != null:
 		check_clicked_correctness(["wrong"], true)
 		return
-		
-		
+
 	if is_game_started:
 		# here we need to check if when the time expires whether the button was clicked
 		score_checked = false
@@ -194,4 +210,8 @@ func _on_ResetTimer_timeout():
 	LabelCorrect.visible = false
 	LabelWrong.visible = false
 	LabelMissed.visible = false
+	Elapsed.text = ""
+	# if score > 20 will speed up at every right answer
+	if score > 20:
+		$GameTimer.wait_time = 0.7
 	$GameTimer.start()
