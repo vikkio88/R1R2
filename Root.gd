@@ -14,6 +14,12 @@ var score: int = 0
 var lives: int = 5
 var score_checked = false
 
+var Best = {
+	time= null,
+	streak= 0,
+	current_streak = 0
+}
+
 onready var Cam = $Cam
 onready var noise = OpenSimplexNoise.new()
 var noise_y = 0
@@ -25,6 +31,7 @@ export var max_roll = 0.1  # Maximum rotation in radians (use sparingly)
 
 onready var Audios = {Start = $SFX/Start, OK = $SFX/Ok, WRONG = $SFX/Wrong}
 onready var Timers = {Game = $GameTimer, Reset = $ResetTimer}
+onready var Labels = {Score = $Score, Lives = $Lives}
 
 onready var SpriteNodes = {
 	Y = $InputView/Active/Y,
@@ -160,12 +167,18 @@ func check_clicked_correctness(clicked, missed = false):
 		Input.start_joy_vibration(0, .1, .2, .2)
 		LabelCorrect.visible = true
 		Audios.OK.play()
-		Elapsed.text = "%.2f sec" % (Timers.Game.wait_time - Timers.Game.time_left)
+		var reaction_time = (Timers.Game.time_left)
+		Elapsed.text = "%.2f sec" % reaction_time
+		if (Best.time == null or reaction_time < Best.time):
+			Best.time = reaction_time
+		Best.current_streak += 1
 
 		# if you score more than 10 will hide the shadows
 		if score > 10 and $InputView/Shadow.visible:
 			$InputView/Shadow.visible = false
 	else:
+		Best.streak = Best.current_streak
+		Best.current_streak = 0
 		score -= 1
 		trauma = .5
 		Input.start_joy_vibration(0, .2, .4, .4)
@@ -184,11 +197,13 @@ func check_clicked_correctness(clicked, missed = false):
 		GameSpriteNodes[key].visible = false
 
 	score = 0 if score < 0 else score
-	$ScoreLabel.text = "SCORE: %d" % score
+	Labels.Score.text = "SCORE: %d" % score
+	Labels.Lives.text = "LIVES: %d" % lives
 	if lives <= 0:
 		lives = 0
 		game_over = true
 		is_game_started = false
+		print_debug("Game over", Best)
 
 
 func _on_GameTimer_timeout():
